@@ -1,0 +1,4 @@
+scripts/*.jar
+__pycache__/
+*.pyc
+.env

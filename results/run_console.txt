@@ -1,0 +1,116 @@
+CREATE SCHEMA IF NOT EXISTS iceberg.bronze
+CREATE SCHEMA IF NOT EXISTS iceberg.bronze_parquet_gzip
+CREATE SCHEMA IF NOT EXISTS iceberg.bronze_orc_gzip
+CREATE SCHEMA IF NOT EXISTS iceberg.bronze_orc_zstd
+CREATE SCHEMA IF NOT EXISTS iceberg.silver
+CREATE SCHEMA IF NOT EXISTS iceberg.gold
+DROP TABLE IF EXISTS iceberg.bronze.customer
+CREATE TABLE iceberg.bronze.customer WITH (format='PARQUET') AS SELECT custkey, mktsegment FROM tpch.sf1.custo
+SELECT count(*) FROM iceberg.bronze.customer
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze."customer$files"
+DROP TABLE IF EXISTS iceberg.bronze.orders
+CREATE TABLE iceberg.bronze.orders WITH (format='PARQUET') AS SELECT orderkey, custkey, orderdate, shippriorit
+SELECT count(*) FROM iceberg.bronze.orders
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze."orders$files"
+DROP TABLE IF EXISTS iceberg.bronze.lineitem
+CREATE TABLE iceberg.bronze.lineitem WITH (format='PARQUET') AS SELECT orderkey, linenumber, extendedprice, di
+SELECT count(*) FROM iceberg.bronze.lineitem
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze."lineitem$files"
+DROP TABLE IF EXISTS iceberg.bronze_parquet_gzip.customer
+CREATE TABLE iceberg.bronze_parquet_gzip.customer WITH (format='PARQUET') AS SELECT custkey, mktsegment FROM t
+SELECT count(*) FROM iceberg.bronze_parquet_gzip.customer
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_parquet_gzip."customer$files"
+DROP TABLE IF EXISTS iceberg.bronze_parquet_gzip.orders
+CREATE TABLE iceberg.bronze_parquet_gzip.orders WITH (format='PARQUET') AS SELECT orderkey, custkey, orderdate
+SELECT count(*) FROM iceberg.bronze_parquet_gzip.orders
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_parquet_gzip."orders$files"
+DROP TABLE IF EXISTS iceberg.bronze_parquet_gzip.lineitem
+CREATE TABLE iceberg.bronze_parquet_gzip.lineitem WITH (format='PARQUET') AS SELECT orderkey, linenumber, exte
+SELECT count(*) FROM iceberg.bronze_parquet_gzip.lineitem
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_parquet_gzip."lineitem$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_gzip.customer
+CREATE TABLE iceberg.bronze_orc_gzip.customer WITH (format='ORC') AS SELECT custkey, mktsegment FROM tpch.sf1.
+SELECT count(*) FROM iceberg.bronze_orc_gzip.customer
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_gzip."customer$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_gzip.orders
+CREATE TABLE iceberg.bronze_orc_gzip.orders WITH (format='ORC') AS SELECT orderkey, custkey, orderdate, shippr
+SELECT count(*) FROM iceberg.bronze_orc_gzip.orders
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_gzip."orders$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_gzip.lineitem
+CREATE TABLE iceberg.bronze_orc_gzip.lineitem WITH (format='ORC') AS SELECT orderkey, linenumber, extendedpric
+SELECT count(*) FROM iceberg.bronze_orc_gzip.lineitem
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_gzip."lineitem$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_zstd.customer
+CREATE TABLE iceberg.bronze_orc_zstd.customer WITH (format='ORC') AS SELECT custkey, mktsegment FROM tpch.sf1.
+SELECT count(*) FROM iceberg.bronze_orc_zstd.customer
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_zstd."customer$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_zstd.orders
+CREATE TABLE iceberg.bronze_orc_zstd.orders WITH (format='ORC') AS SELECT orderkey, custkey, orderdate, shippr
+SELECT count(*) FROM iceberg.bronze_orc_zstd.orders
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_zstd."orders$files"
+DROP TABLE IF EXISTS iceberg.bronze_orc_zstd.lineitem
+CREATE TABLE iceberg.bronze_orc_zstd.lineitem WITH (format='ORC') AS SELECT orderkey, linenumber, extendedpric
+SELECT count(*) FROM iceberg.bronze_orc_zstd.lineitem
+SELECT sum(file_size_in_bytes), count(*) FROM iceberg.bronze_orc_zstd."lineitem$files"
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM tpch.s
+SELECT count(*) FROM iceberg.bronze.customer WHERE custkey IS NULL OR mktsegment IS NULL OR trim(mktsegment)='
+SELECT count(*) FROM iceberg.bronze.orders WHERE orderkey IS NULL OR custkey IS NULL OR orderdate IS NULL OR s
+SELECT count(*) FROM iceberg.bronze.lineitem WHERE orderkey IS NULL OR linenumber IS NULL OR shipdate IS NULL 
+SELECT count(*) FROM (SELECT custkey FROM iceberg.bronze.customer GROUP BY custkey HAVING count(*)>1)
+SELECT count(*) FROM (SELECT orderkey FROM iceberg.bronze.orders GROUP BY orderkey HAVING count(*)>1)
+SELECT count(*) FROM (SELECT orderkey,linenumber FROM iceberg.bronze.lineitem GROUP BY orderkey,linenumber HAV
+SELECT count(*) FROM iceberg.bronze.orders o LEFT JOIN iceberg.bronze.customer c ON o.custkey=c.custkey WHERE 
+SELECT count(*) FROM iceberg.bronze.lineitem l LEFT JOIN iceberg.bronze.orders o ON l.orderkey=o.orderkey WHER
+DROP TABLE IF EXISTS iceberg.silver.order_lines
+CREATE TABLE iceberg.silver.order_lines WITH (format='PARQUET') AS SELECT l.orderkey,l.linenumber,o.custkey,up
+DROP TABLE IF EXISTS iceberg.gold.shipping_priority
+CREATE TABLE iceberg.gold.shipping_priority WITH (format='PARQUET') AS SELECT orderkey,sum(line_revenue) AS re
+SELECT * FROM iceberg.gold.shipping_priority ORDER BY revenue DESC
+SELECT count(*) FROM iceberg.silver.order_lines
+SELECT sum(file_size_in_bytes),count(*) FROM iceberg.silver."order_lines$files"
+SELECT count(*) FROM iceberg.gold.shipping_priority
+SELECT sum(file_size_in_bytes),count(*) FROM iceberg.gold."shipping_priority$files"
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+SELECT l.orderkey, SUM(l.extendedprice * (1 - l.discount)) AS revenue, o.orderdate, o.shippriority FROM iceber
+ALTER TABLE iceberg.silver.order_lines ADD COLUMN source_system VARCHAR
+ALTER TABLE iceberg.silver.order_lines RENAME COLUMN source_system TO data_source
+SELECT count(*),count(data_source) FROM iceberg.silver.order_lines
+SELECT snapshot_id FROM iceberg.silver."order_lines$snapshots" ORDER BY committed_at DESC LIMIT 1
+SELECT count(*) FROM iceberg.silver.order_lines
+DELETE FROM iceberg.silver.order_lines WHERE orderkey=(SELECT min(orderkey) FROM iceberg.silver.order_lines)
+SELECT count(*) FROM iceberg.silver.order_lines
+SELECT count(*) FROM iceberg.silver.order_lines FOR VERSION AS OF 2653687598250934620
+CALL iceberg.system.rollback_to_snapshot(schema_name=>'silver',table_name=>'order_lines',snapshot_id=>26536875
+Traceback (most recent call last):
+  File "C:\Users\nelli\Documents\Codex\2026-10-11\x20\outputs\lakehouse-practice\scripts\run.py", line 116, in <module>
+    execute(rollback); restored=execute('SELECT count(*) FROM iceberg.silver.order_lines')['rows'][0][0]
+    ^^^^^^^^^^^^^^^^^
+  File "C:\Users\nelli\Documents\Codex\2026-10-11\x20\outputs\lakehouse-practice\scripts\run.py", line 10, in execute
+    r=query(sql,codec); log.append({'sql':sql,'session_compression_codec':codec,**r})
+      ^^^^^^^^^^^^^^^^
+  File "C:\Users\nelli\Documents\Codex\2026-10-11\x20\outputs\lakehouse-practice\scripts\trino_client.py", line 12, in query
+    if 'error' in result: raise RuntimeError(json.dumps(result['error'],ensure_ascii=False))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: {"message": "line 1:42: Unknown argument name: SCHEMA_NAME", "errorCode": 76, "errorName": "INVALID_ARGUMENTS", "errorType": "USER_ERROR", "errorLocation": {"lineNumber": 1, "columnNumber": 42}, "failureInfo": {"type": "io.trino.spi.TrinoException", "message": "line 1:42: Unknown argument name: SCHEMA_NAME", "suppressed": [], "stack": ["io.trino.sql.analyzer.SemanticExceptions.semanticException(SemanticExceptions.java:58)", "io.trino.sql.analyzer.SemanticExceptions.semanticException(SemanticExceptions.java:52)", "io.trino.execution.CallTask.execute(CallTask.java:136)", "io.trino.execution.CallTask.execute(CallTask.java:70)", "io.trino.execution.DataDefinitionExecution.start(DataDefinitionExecution.java:152)", "io.trino.execution.SqlQueryManager.createQuery(SqlQueryManager.java:272)", "io.trino.dispatcher.LocalDispatchQuery.startExecution(LocalDispatchQuery.java:150)", "io.trino.dispatcher.LocalDispatchQuery.lambda$waitForMinimumWorkers$1(LocalDispatchQuery.java:134)", "io.airlift.concurrent.MoreFutures.lambda$addSuccessCallback$12(MoreFutures.java:570)", "io.airlift.concurrent.MoreFutures$3.onSuccess(MoreFutures.java:545)", "com.google.common.util.concurrent.Futures$CallbackListener.run(Futures.java:1132)", "io.trino.$gen.Trino_476____20261011_143014_2.run(Unknown Source)", "java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1095)", "java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:619)", "java.base/java.lang.Thread.run(Thread.java:1447)"], "errorInfo": {"code": 76, "name": "INVALID_ARGUMENTS", "type": "USER_ERROR"}, "errorLocation": {"lineNumber": 1, "columnNumber": 42}}}

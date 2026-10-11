@@ -1,0 +1,7 @@
+
+Name                                            NumberOfCores NumberOfLogicalProcessors
+----                                            ------------- -------------------------
+AMD Ryzen 5 5500U with Radeon Graphics                      6                        12
+
+Docker memory bytes: 7974043648; CPUs: 12; OS: Docker Desktop
+2026-10-11T17:26:06.2899764+03:00

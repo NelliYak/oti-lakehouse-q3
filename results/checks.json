@@ -1,0 +1,29 @@
+{
+  "bronze_counts": {
+    "customer": 150000,
+    "orders": 1500000,
+    "lineitem": 6001215
+  },
+  "customer_invalid": 0,
+  "orders_invalid": 0,
+  "lineitem_invalid": 0,
+  "customer_duplicates": 0,
+  "orders_duplicates": 0,
+  "lineitem_duplicates": 0,
+  "orphan_orders": 0,
+  "orphan_lines": 0,
+  "gold_matches_reference": true,
+  "schema_evolution_nulls": [
+    [
+      30519,
+      0
+    ]
+  ],
+  "time_travel": {
+    "snapshot_id": 2653687598250934620,
+    "before": 30519,
+    "after_delete": 30517,
+    "historic": 30519,
+    "restored": 30519
+  }
+}

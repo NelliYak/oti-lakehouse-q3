@@ -1,0 +1,22 @@
+[
+  {
+    "mktsegment": "AUTOMOBILE",
+    "customers": 29752
+  },
+  {
+    "mktsegment": "BUILDING",
+    "customers": 30142
+  },
+  {
+    "mktsegment": "FURNITURE",
+    "customers": 29968
+  },
+  {
+    "mktsegment": "HOUSEHOLD",
+    "customers": 30189
+  },
+  {
+    "mktsegment": "MACHINERY",
+    "customers": 29949
+  }
+]

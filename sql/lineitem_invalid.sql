@@ -1,0 +1,1 @@
+SELECT count(*) FROM iceberg.bronze.lineitem WHERE orderkey IS NULL OR linenumber IS NULL OR shipdate IS NULL OR extendedprice IS NULL OR extendedprice<0 OR discount IS NULL OR discount<0 OR discount>1;

@@ -1,0 +1,5 @@
+NAME                         IMAGE                                     COMMAND                  SERVICE      CREATED          STATUS                    PORTS
+oti-lakehouse-lakekeeper-1   quay.io/lakekeeper/catalog:v0.14.0        "/home/nonroot/lakek…"   lakekeeper   14 minutes ago   Up 14 minutes             127.0.0.1:8181->8181/tcp
+oti-lakehouse-minio-1        pgsty/silo:RELEASE.2026-09-03T13-18-01Z   "/usr/bin/docker-ent…"   minio        8 minutes ago    Up 8 minutes              127.0.0.1:9000-9001->9000-9001/tcp
+oti-lakehouse-postgres-1     postgres:16                               "docker-entrypoint.s…"   postgres     15 minutes ago   Up 15 minutes (healthy)   5432/tcp
+oti-lakehouse-trino-1        trinodb/trino:476                         "/usr/lib/trino/bin/…"   trino        4 minutes ago    Up 4 minutes (healthy)    127.0.0.1:8080->8080/tcp

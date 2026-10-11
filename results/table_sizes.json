@@ -1,0 +1,142 @@
+[
+  {
+    "schema": "bronze",
+    "table": "customer",
+    "format": "PARQUET",
+    "codec": "ZSTD",
+    "rows": 150000,
+    "bytes": 236239,
+    "files": 1,
+    "write_seconds": 8.405656599992653
+  },
+  {
+    "schema": "bronze",
+    "table": "orders",
+    "format": "PARQUET",
+    "codec": "ZSTD",
+    "rows": 1500000,
+    "bytes": 6986856,
+    "files": 1,
+    "write_seconds": 8.620357400010107
+  },
+  {
+    "schema": "bronze",
+    "table": "lineitem",
+    "format": "PARQUET",
+    "codec": "ZSTD",
+    "rows": 6001215,
+    "bytes": 41474922,
+    "files": 2,
+    "write_seconds": 8.054434499994386
+  },
+  {
+    "schema": "bronze_parquet_gzip",
+    "table": "customer",
+    "format": "PARQUET",
+    "codec": "GZIP",
+    "rows": 150000,
+    "bytes": 278618,
+    "files": 1,
+    "write_seconds": 1.0464690999942832
+  },
+  {
+    "schema": "bronze_parquet_gzip",
+    "table": "orders",
+    "format": "PARQUET",
+    "codec": "GZIP",
+    "rows": 1500000,
+    "bytes": 7641408,
+    "files": 1,
+    "write_seconds": 3.440177999989828
+  },
+  {
+    "schema": "bronze_parquet_gzip",
+    "table": "lineitem",
+    "format": "PARQUET",
+    "codec": "GZIP",
+    "rows": 6001215,
+    "bytes": 41003288,
+    "files": 2,
+    "write_seconds": 10.191233899997314
+  },
+  {
+    "schema": "bronze_orc_gzip",
+    "table": "customer",
+    "format": "ORC",
+    "codec": "GZIP",
+    "rows": 150000,
+    "bytes": 65197,
+    "files": 1,
+    "write_seconds": 1.2591221000184305
+  },
+  {
+    "schema": "bronze_orc_gzip",
+    "table": "orders",
+    "format": "ORC",
+    "codec": "GZIP",
+    "rows": 1500000,
+    "bytes": 6357493,
+    "files": 1,
+    "write_seconds": 2.5499957999854814
+  },
+  {
+    "schema": "bronze_orc_gzip",
+    "table": "lineitem",
+    "format": "ORC",
+    "codec": "GZIP",
+    "rows": 6001215,
+    "bytes": 45850365,
+    "files": 2,
+    "write_seconds": 7.889264700002968
+  },
+  {
+    "schema": "bronze_orc_zstd",
+    "table": "customer",
+    "format": "ORC",
+    "codec": "ZSTD",
+    "rows": 150000,
+    "bytes": 62227,
+    "files": 1,
+    "write_seconds": 0.6642712999891955
+  },
+  {
+    "schema": "bronze_orc_zstd",
+    "table": "orders",
+    "format": "ORC",
+    "codec": "ZSTD",
+    "rows": 1500000,
+    "bytes": 6315975,
+    "files": 1,
+    "write_seconds": 1.7341763000003994
+  },
+  {
+    "schema": "bronze_orc_zstd",
+    "table": "lineitem",
+    "format": "ORC",
+    "codec": "ZSTD",
+    "rows": 6001215,
+    "bytes": 47892596,
+    "files": 2,
+    "write_seconds": 5.666427199990721
+  },
+  {
+    "schema": "silver",
+    "table": "order_lines",
+    "format": "PARQUET",
+    "codec": "ZSTD",
+    "rows": 30519,
+    "bytes": 447101,
+    "files": 1,
+    "write_seconds": null
+  },
+  {
+    "schema": "gold",
+    "table": "shipping_priority",
+    "format": "PARQUET",
+    "codec": "ZSTD",
+    "rows": 10,
+    "bytes": 841,
+    "files": 1,
+    "write_seconds": null
+  }
+]
